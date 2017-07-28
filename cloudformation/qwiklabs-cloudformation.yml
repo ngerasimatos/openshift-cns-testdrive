@@ -7,7 +7,7 @@ Parameters:
 
   PublicHostedZone:
     Type: String
-    Default: "aws.testdrive.openshift.com"
+    Default: "ocp-admin.aws.openshifttestdrive.com"
     ConstraintDescription: DNS zone for Instances and OpenShift
 
   InfraInstanceType:
@@ -58,6 +58,12 @@ Parameters:
     Type: AWS::EC2::KeyPair::KeyName
     Default: generic-qwiklab
     ConstraintDescription: Must be the name of an existing EC2 key pair.
+
+  QwiklabId:
+    Type: String
+    Default: lab-8675309
+    ConstraintDescription: qwikLAB lab identifier
+
 
 Mappings:
   AWSRegion2AMI:
@@ -415,6 +421,15 @@ Resources:
         ToPort: 65535
         CidrIp: 0.0.0.0/0
 
+  HostedZone:
+    Type: AWS::Route53::HostedZone
+    Properties:
+      Name: !Ref 'PublicHostedZone'
+      VPCs:
+        -
+          VPCId: !Ref VPC
+          VPCRegion: !Ref AWS::Region
+
   Route53Records:
     Type: AWS::Route53::RecordSetGroup
     DependsOn:
@@ -428,75 +443,75 @@ Resources:
       - WorkerNode5
       - WorkerNode6
     Properties:
-      HostedZoneName: !Join ['', [!Ref 'AWS::AccountId', ., !Ref 'PublicHostedZone', .]]
+      HostedZoneName: !Join ['', [!Ref 'PublicHostedZone', .]]
       RecordSets:
-        - Name: !Join ['', [master., !Ref 'AWS::AccountId', ., !Ref 'PublicHostedZone', .]]
+        - Name: !Join ['', [master., !Ref 'QwiklabId', ., !Ref 'PublicHostedZone', .]]
           Type: A
           TTL: '900'
           ResourceRecords:
           - !GetAtt Master1.PublicIp
 
-        - Name: !Join ['', [openshift., !Ref 'AWS::AccountId', ., !Ref 'PublicHostedZone', .]]
+        - Name: !Join ['', [openshift., !Ref 'QwiklabId', ., !Ref 'PublicHostedZone', .]]
           Type: A
           TTL: '900'
           ResourceRecords:
           - !GetAtt Master1.PublicIp
 
-        - Name: !Join ['', [infra., !Ref 'AWS::AccountId', ., !Ref 'PublicHostedZone', .]]
+        - Name: !Join ['', [infra., !Ref 'QwiklabId', ., !Ref 'PublicHostedZone', .]]
           Type: A
           TTL: '900'
           ResourceRecords:
           - !GetAtt InfraNode1.PublicIp
 
-        - Name: !Join ['', ["*", .,  apps., !Ref 'AWS::AccountId', ., !Ref 'PublicHostedZone', .]]
+        - Name: !Join ['', ["*", .,  apps., !Ref 'QwiklabId', ., !Ref 'PublicHostedZone', .]]
           Type: A
           TTL: '900'
           ResourceRecords:
           - !GetAtt InfraNode1.PublicIp
 
-        - Name: !Join ['', [idm., !Ref 'AWS::AccountId', ., !Ref 'PublicHostedZone', .]]
+        - Name: !Join ['', [idm., !Ref QwiklabId, ., !Ref 'PublicHostedZone', .]]
           Type: A
           TTL: '900'
           ResourceRecords:
           - !GetAtt IdmNode1.PublicIp
 
-        - Name: !Join ['', [guide., !Ref 'AWS::AccountId', ., !Ref 'PublicHostedZone', .]]
+        - Name: !Join ['', [guide., !Ref QwiklabId, ., !Ref 'PublicHostedZone', .]]
           Type: A
           TTL: '900'
           ResourceRecords:
           - !GetAtt GuideNode.PublicIp
 
-        - Name: !Join ['', [node01., !Ref 'AWS::AccountId', ., !Ref 'PublicHostedZone', .]]
+        - Name: !Join ['', [node01., !Ref QwiklabId, ., !Ref 'PublicHostedZone', .]]
           Type: A
           TTL: '900'
           ResourceRecords:
           - !GetAtt WorkerNode1.PublicIp
 
-        - Name: !Join ['', [node02., !Ref 'AWS::AccountId', ., !Ref 'PublicHostedZone', .]]
+        - Name: !Join ['', [node02., !Ref QwiklabId, ., !Ref 'PublicHostedZone', .]]
           Type: A
           TTL: '900'
           ResourceRecords:
           - !GetAtt WorkerNode2.PublicIp
 
-        - Name: !Join ['', [node03., !Ref 'AWS::AccountId', ., !Ref 'PublicHostedZone', .]]
+        - Name: !Join ['', [node03., !Ref QwiklabId, ., !Ref 'PublicHostedZone', .]]
           Type: A
           TTL: '900'
           ResourceRecords:
           - !GetAtt WorkerNode3.PublicIp
 
-        - Name: !Join ['', [node04., !Ref 'AWS::AccountId', ., !Ref 'PublicHostedZone', .]]
+        - Name: !Join ['', [node04., !Ref QwiklabId, ., !Ref 'PublicHostedZone', .]]
           Type: A
           TTL: '900'
           ResourceRecords:
           - !GetAtt WorkerNode4.PublicIp
 
-        - Name: !Join ['', [node05., !Ref 'AWS::AccountId', ., !Ref 'PublicHostedZone', .]]
+        - Name: !Join ['', [node05., !Ref QwiklabId, ., !Ref 'PublicHostedZone', .]]
           Type: A
           TTL: '900'
           ResourceRecords:
           - !GetAtt WorkerNode5.PublicIp
 
-        - Name: !Join ['', [node06., !Ref 'AWS::AccountId', ., !Ref 'PublicHostedZone', .]]
+        - Name: !Join ['', [node06., !Ref QwiklabId, ., !Ref 'PublicHostedZone', .]]
           Type: A
           TTL: '900'
           ResourceRecords:
@@ -533,7 +548,7 @@ Resources:
         Value:
           Ref: AWS::StackId
       - Key: Name
-        Value: !Join [ ., [master, !Ref 'AWS::AccountId', !Ref 'PublicHostedZone' ] ]
+        Value: !Join [ ., [master, !Ref 'QwiklabId', !Ref 'PublicHostedZone' ] ]
       BlockDeviceMappings:
       - DeviceName: /dev/sda1
         Ebs:
@@ -565,7 +580,7 @@ Resources:
               device: /dev/xvdc
               partition: auto
 
-            fqdn: master.${AWS::AccountId}.${PublicHostedZone}
+            fqdn: master.${QwiklabId}.${PublicHostedZone}
             manage_etc_hosts: true
 
             write_files:
@@ -599,8 +614,8 @@ Resources:
                   openshift_master_identity_providers=[{'name': 'idm', 'challenge': 'true', 'login': 'true', 'kind': 'LDAPPasswordIdentityProvider', 'attributes': {'id': ['dn'], 'email': ['mail'], 'name': ['cn'], 'preferredUsername': ['uid']}, 'bindDN': 'uid=admin,cn=users,cn=accounts,<DC>', 'bindPassword': 'ldapadmin', 'ca': '/etc/origin/master/ipa-ca.crt', 'insecure': 'false', 'url': 'ldap://IDM/cn=users,cn=accounts,<DC>?uid?sub?(memberOf=cn=ose-user,cn=groups,cn=accounts,<DC>)'}]
                   openshift_image_tag=v3.5.5.26
                   openshift_pkg_version=-3.5.5.26-1
-                  openshift_master_default_subdomain=apps.${AWS::AccountId}.${PublicHostedZone}
-                  openshift_master_cluster_public_hostname=openshift.${AWS::AccountId}.${PublicHostedZone}
+                  openshift_master_default_subdomain=apps.${QwiklabId}.${PublicHostedZone}
+                  openshift_master_cluster_public_hostname=openshift.${QwiklabId}.${PublicHostedZone}
                   openshift_router_selector='region=infra'
                   openshift_registry_selector='region=infra'
                   osm_default_node_selector='region=apps'
@@ -609,37 +624,37 @@ Resources:
                   openshift_hosted_logging_deploy=false
 
                   [etcd]
-                  master.${AWS::AccountId}.${PublicHostedZone}
+                  master.${QwiklabId}.${PublicHostedZone}
 
                   [masters]
-                  master.${AWS::AccountId}.${PublicHostedZone}
+                  master.${QwiklabId}.${PublicHostedZone}
 
                   [nodes]
-                  master.${AWS::AccountId}.${PublicHostedZone}
-                  infra.${AWS::AccountId}.${PublicHostedZone} openshift_node_labels="{'region': 'infra'}"
-                  node01.${AWS::AccountId}.${PublicHostedZone} openshift_node_labels="{'region': 'apps'}"
-                  node02.${AWS::AccountId}.${PublicHostedZone} openshift_node_labels="{'region': 'apps'}"
-                  node03.${AWS::AccountId}.${PublicHostedZone} openshift_node_labels="{'region': 'apps'}"
+                  master.${QwiklabId}.${PublicHostedZone}
+                  infra.${QwiklabId}.${PublicHostedZone} openshift_node_labels="{'region': 'infra'}"
+                  node01.${QwiklabId}.${PublicHostedZone} openshift_node_labels="{'region': 'apps'}"
+                  node02.${QwiklabId}.${PublicHostedZone} openshift_node_labels="{'region': 'apps'}"
+                  node03.${QwiklabId}.${PublicHostedZone} openshift_node_labels="{'region': 'apps'}"
 
                   [additional_nodes]
-                  node04.${AWS::AccountId}.${PublicHostedZone} openshift_node_labels="{'region': 'apps'}"
-                  node05.${AWS::AccountId}.${PublicHostedZone} openshift_node_labels="{'region': 'apps'}"
-                  node06.${AWS::AccountId}.${PublicHostedZone} openshift_node_labels="{'region': 'apps'}"
+                  node04.${QwiklabId}.${PublicHostedZone} openshift_node_labels="{'region': 'apps'}"
+                  node05.${QwiklabId}.${PublicHostedZone} openshift_node_labels="{'region': 'apps'}"
+                  node06.${QwiklabId}.${PublicHostedZone} openshift_node_labels="{'region': 'apps'}"
 
                   [cns]
-                  node01.${AWS::AccountId}.${PublicHostedZone}
-                  node02.${AWS::AccountId}.${PublicHostedZone}
-                  node03.${AWS::AccountId}.${PublicHostedZone}
+                  node01.${QwiklabId}.${PublicHostedZone}
+                  node02.${QwiklabId}.${PublicHostedZone}
+                  node03.${QwiklabId}.${PublicHostedZone}
 
                   [idm]
-                  idm.${AWS::AccountId}.${PublicHostedZone}
+                  idm.${QwiklabId}.${PublicHostedZone}
                 path: /etc/ansible/hosts
 
               - content: |
                   [cns]
-                  node04.${AWS::AccountId}.${PublicHostedZone}
-                  node05.${AWS::AccountId}.${PublicHostedZone}
-                  node06.${AWS::AccountId}.${PublicHostedZone}
+                  node04.${QwiklabId}.${PublicHostedZone}
+                  node05.${QwiklabId}.${PublicHostedZone}
+                  node06.${QwiklabId}.${PublicHostedZone}
                 path: /etc/ansible/new-cns-hosts
 
               - content: |
@@ -843,7 +858,7 @@ Resources:
 
 
               - content: |
-                  OCP_ROUTING_SUFFIX: "apps.${AWS::AccountId}.${PublicHostedZone}"
+                  OCP_ROUTING_SUFFIX: "apps.${QwiklabId}.${PublicHostedZone}"
                   NODE_BRICK_DEVICE: "/dev/xvdd"
                   CNS_NAMESPACE: "container-native-storage"
                   HEKETI_ADMIN_PW: "myS3cr3tpassw0rd"
@@ -900,13 +915,13 @@ Resources:
         Value:
           Ref: AWS::StackId
       - Key: Name
-        Value: !Join [ ., [infra, !Ref 'AWS::AccountId', !Ref 'PublicHostedZone' ] ]
+        Value: !Join [ ., [infra, !Ref QwiklabId, !Ref 'PublicHostedZone' ] ]
       UserData:
         Fn::Base64:
           !Sub |
             #cloud-config
 
-            fqdn: infra.${AWS::AccountId}.${PublicHostedZone}
+            fqdn: infra.${QwiklabId}.${PublicHostedZone}
             manage_etc_hosts: true
 
             write_files:
@@ -966,7 +981,7 @@ Resources:
         Value:
           Ref: AWS::StackId
       - Key: Name
-        Value: !Join [ ., [idm, !Ref 'AWS::AccountId', !Ref 'PublicHostedZone' ] ]
+        Value: !Join [ ., [idm, !Ref 'QwiklabId', !Ref 'PublicHostedZone' ] ]
       UserData:
         Fn::Base64:
           !Sub |
@@ -979,7 +994,7 @@ Resources:
               default_user:
                 name: cloud-user
 
-            fqdn: idm.${AWS::AccountId}.${PublicHostedZone}
+            fqdn: idm.${QwiklabId}.${PublicHostedZone}
             manage_etc_hosts: true
 
             runcmd:
@@ -1018,7 +1033,7 @@ Resources:
         Value:
           Ref: AWS::StackId
       - Key: Name
-        Value: !Join [ ., [labguide, !Ref 'AWS::AccountId', !Ref 'PublicHostedZone' ] ]
+        Value: !Join [ ., [labguide, !Ref QwiklabId, !Ref 'PublicHostedZone' ] ]
       UserData:
         Fn::Base64:
           !Sub |
@@ -1028,7 +1043,7 @@ Resources:
             - mounts
             - runcmd
 
-            fqdn: guide.${AWS::AccountId}.${PublicHostedZone}
+            fqdn: guide.${QwiklabId}.${PublicHostedZone}
             manage_etc_hosts: true
 
             write_files:
@@ -1042,30 +1057,30 @@ Resources:
             - content: |
                 WORKSHOPS_URLS="https://raw.githubusercontent.com/openshift/openshift-cns-testdrive/master/labguide/_ocp_admin_testdrive.yaml"
                 CONTENT_URL_PREFIX="https://raw.githubusercontent.com/openshift/openshift-cns-testdrive/master/labguide"
-                OCP_ROUTING_SUFFIX="apps.${AWS::AccountId}.${PublicHostedZone}"
+                OCP_ROUTING_SUFFIX="apps.${QwiklabId}.${PublicHostedZone}"
                 MASTER_HOSTNAME="master"
-                MASTER_EXTERNAL_FQDN="master.${AWS::AccountId}.${PublicHostedZone}"
+                MASTER_EXTERNAL_FQDN="master.${QwiklabId}.${PublicHostedZone}"
                 MASTER_INTERNAL_FQDN="${Master1.PrivateDnsName}"
                 INFRA_INTERNAL_FQDN="${InfraNode1.PrivateDnsName}"
                 NODE1_HOSTNAME="node01"
-                NODE1_EXTERNAL_FQDN="node01.${AWS::AccountId}.${PublicHostedZone}"
+                NODE1_EXTERNAL_FQDN="node01.${QwiklabId}.${PublicHostedZone}"
                 NODE1_INTERNAL_FQDN="${WorkerNode1.PrivateDnsName}"
                 NODE1_INTERNAL_IP="${WorkerNode1.PrivateIp}"
                 NODE2_HOSTNAME="node02"
-                NODE2_EXTERNAL_FQDN="node02.${AWS::AccountId}.${PublicHostedZone}"
+                NODE2_EXTERNAL_FQDN="node02.${QwiklabId}.${PublicHostedZone}"
                 NODE2_INTERNAL_FQDN="${WorkerNode2.PrivateDnsName}"
                 NODE2_INTERNAL_IP="${WorkerNode2.PrivateIp}"
                 NODE3_HOSTNAME="node03"
-                NODE3_EXTERNAL_FQDN="node03.${AWS::AccountId}.${PublicHostedZone}"
+                NODE3_EXTERNAL_FQDN="node03.${QwiklabId}.${PublicHostedZone}"
                 NODE3_INTERNAL_FQDN="${WorkerNode3.PrivateDnsName}"
                 NODE3_INTERNAL_IP="${WorkerNode3.PrivateIp}"
-                NODE4_EXTERNAL_FQDN="node04.${AWS::AccountId}.${PublicHostedZone}"
+                NODE4_EXTERNAL_FQDN="node04.${QwiklabId}.${PublicHostedZone}"
                 NODE4_INTERNAL_FQDN="${WorkerNode4.PrivateDnsName}"
                 NODE4_INTERNAL_IP="${WorkerNode4.PrivateIp}"
-                NODE5_EXTERNAL_FQDN="node05.${AWS::AccountId}.${PublicHostedZone}"
+                NODE5_EXTERNAL_FQDN="node05.${QwiklabId}.${PublicHostedZone}"
                 NODE5_INTERNAL_FQDN="${WorkerNode5.PrivateDnsName}"
                 NODE5_INTERNAL_IP="${WorkerNode5.PrivateIp}"
-                NODE6_EXTERNAL_FQDN="node06.${AWS::AccountId}.${PublicHostedZone}"
+                NODE6_EXTERNAL_FQDN="node06.${QwiklabId}.${PublicHostedZone}"
                 NODE6_INTERNAL_FQDN="${WorkerNode6.PrivateDnsName}"
                 NODE6_INTERNAL_IP="${WorkerNode6.PrivateIp}"
                 NODE_BRICK_DEVICE="/dev/xvdd"
@@ -1142,7 +1157,7 @@ Resources:
         Value:
           Ref: AWS::StackId
       - Key: Name
-        Value: !Join [ ., [node01, !Ref 'AWS::AccountId', !Ref 'PublicHostedZone' ] ]
+        Value: !Join [ ., [node01, !Ref QwiklabId, !Ref 'PublicHostedZone' ] ]
       UserData:
         Fn::Base64:
           !Sub |
@@ -1151,7 +1166,7 @@ Resources:
             - disk_setup
             - mounts
 
-            fqdn: node01.${AWS::AccountId}.${PublicHostedZone}
+            fqdn: node01.${QwiklabId}.${PublicHostedZone}
             manage_etc_hosts: true
 
             fs_setup:
@@ -1224,7 +1239,7 @@ Resources:
         Value:
           Ref: AWS::StackId
       - Key: Name
-        Value: !Join [ ., [node02, !Ref 'AWS::AccountId', !Ref 'PublicHostedZone' ] ]
+        Value: !Join [ ., [node02, !Ref QwiklabId, !Ref 'PublicHostedZone' ] ]
       UserData:
         Fn::Base64:
           !Sub |
@@ -1233,7 +1248,7 @@ Resources:
             - disk_setup
             - mounts
 
-            fqdn: node02.${AWS::AccountId}.${PublicHostedZone}
+            fqdn: node02.${QwiklabId}.${PublicHostedZone}
             manage_etc_hosts: true
 
             fs_setup:
@@ -1306,7 +1321,7 @@ Resources:
         Value:
           Ref: AWS::StackId
       - Key: Name
-        Value: !Join [ ., [node03, !Ref 'AWS::AccountId', !Ref 'PublicHostedZone' ] ]
+        Value: !Join [ ., [node03, !Ref QwiklabId, !Ref 'PublicHostedZone' ] ]
       UserData:
         Fn::Base64:
           !Sub |
@@ -1315,7 +1330,7 @@ Resources:
             - disk_setup
             - mounts
 
-            fqdn: node03.${AWS::AccountId}.${PublicHostedZone}
+            fqdn: node03.${QwiklabId}.${PublicHostedZone}
             manage_etc_hosts: true
 
             fs_setup:
@@ -1387,13 +1402,13 @@ Resources:
           Ebs:
             VolumeSize: '10'
             VolumeType: 'gp2'
-            DeleteOnTermination: 'true
+            DeleteOnTermination: 'true'
       Tags:
       - Key: Application
         Value:
           Ref: AWS::StackId
       - Key: Name
-        Value: !Join [ ., [node04, !Ref 'AWS::AccountId', !Ref 'PublicHostedZone' ] ]
+        Value: !Join [ ., [node04, !Ref QwiklabId, !Ref 'PublicHostedZone' ] ]
       UserData:
         Fn::Base64:
           !Sub |
@@ -1402,7 +1417,7 @@ Resources:
             - disk_setup
             - mounts
 
-            fqdn: node04.${AWS::AccountId}.${PublicHostedZone}
+            fqdn: node04.${QwiklabId}.${PublicHostedZone}
             manage_etc_hosts: true
 
             fs_setup:
@@ -1480,7 +1495,7 @@ Resources:
         Value:
           Ref: AWS::StackId
       - Key: Name
-        Value: !Join [ ., [node05, !Ref 'AWS::AccountId', !Ref 'PublicHostedZone' ] ]
+        Value: !Join [ ., [node05, !Ref QwiklabId, !Ref 'PublicHostedZone' ] ]
       UserData:
         Fn::Base64:
           !Sub |
@@ -1489,7 +1504,7 @@ Resources:
             - disk_setup
             - mounts
 
-            fqdn: node05.${AWS::AccountId}.${PublicHostedZone}
+            fqdn: node05.${QwiklabId}.${PublicHostedZone}
             manage_etc_hosts: true
 
             fs_setup:
@@ -1567,7 +1582,15 @@ Resources:
         Value:
           Ref: AWS::StackId
       - Key: Name
-        Value: !Join [ ., [node06, !Ref 'AWS::AccountId', !Ref 'PublicHostedZone' ] ]
+<<<<<<< HEAD
+<<<<<<< HEAD
+        Value: !Join [ ., [node06, !Ref QwiklabId, !Ref 'PublicHostedZone' ] ]
+=======
+        Value: !Join [ ., [node04, !Ref QwiklabId, !Ref 'PublicHostedZone' ] ]
+>>>>>>> parent of e780659... use the correct DNS with specific aws account (#56)
+=======
+        Value: !Join [ ., [node04, !Ref QwiklabId, !Ref 'PublicHostedZone' ] ]
+>>>>>>> parent of e780659... use the correct DNS with specific aws account (#56)
       UserData:
         Fn::Base64:
           !Sub |
@@ -1576,7 +1599,15 @@ Resources:
             - disk_setup
             - mounts
 
-            fqdn: node06.${AWS::AccountId}.${PublicHostedZone}
+<<<<<<< HEAD
+<<<<<<< HEAD
+            fqdn: node06.${QwiklabId}.${PublicHostedZone}
+=======
+            fqdn: node04.${QwiklabId}.${PublicHostedZone}
+>>>>>>> parent of e780659... use the correct DNS with specific aws account (#56)
+=======
+            fqdn: node04.${QwiklabId}.${PublicHostedZone}
+>>>>>>> parent of e780659... use the correct DNS with specific aws account (#56)
             manage_etc_hosts: true
 
             fs_setup:
