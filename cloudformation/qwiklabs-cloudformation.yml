@@ -1582,7 +1582,11 @@ Resources:
         Value:
           Ref: AWS::StackId
       - Key: Name
+<<<<<<< HEAD
         Value: !Join [ ., [node06, !Ref QwiklabId, !Ref 'PublicHostedZone' ] ]
+=======
+        Value: !Join [ ., [node04, !Ref QwiklabId, !Ref 'PublicHostedZone' ] ]
+>>>>>>> parent of e780659... use the correct DNS with specific aws account (#56)
       UserData:
         Fn::Base64:
           !Sub |
@@ -1591,7 +1595,11 @@ Resources:
             - disk_setup
             - mounts
 
+<<<<<<< HEAD
             fqdn: node06.${QwiklabId}.${PublicHostedZone}
+=======
+            fqdn: node04.${QwiklabId}.${PublicHostedZone}
+>>>>>>> parent of e780659... use the correct DNS with specific aws account (#56)
             manage_etc_hosts: true
 
             fs_setup:
