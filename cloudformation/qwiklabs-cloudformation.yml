@@ -1489,7 +1489,7 @@ Resources:
           Ebs:
             VolumeSize: '10'
             VolumeType: 'gp2'
-            DeleteOnTermination: 'true
+            DeleteOnTermination: 'true'
       Tags:
       - Key: Application
         Value:
