@@ -824,6 +824,10 @@ Device 01c94798bf6b1af87974573b420c4dff delete
 
 NOTE: Only devices that are not used by other Gluster volumes can be deleted. If that's not the case `heketi-cli` will tell you about it. In this case you need to issue a `remove` operation before.
 
+You can now check that the device is gone from the topology by running:
+
+  [cloud-user@{{MASTER_HOSTNAME}} ~]$ heketi-cli topology info
+
 Node deletion is also possible and is basically comprised of:
 
 1. successful execution of the `remove` operation on all devices of the node
@@ -880,10 +884,9 @@ The registry will now redeploy.
 
 Observe the registry deployment get updated:
 
-  [cloud-user@{{MASTER_HOSTNAME}} ~]$ oc logs -f deploymentconfig/docker-registry
+  [cloud-user@{{MASTER_HOSTNAME}} ~]$ oc logs -f dc/docker-registry
 
-After a couple of seconds a new deployment of the registry should be running:
-
+After a couple of seconds a new deployment of the registry should be available.
 Verify a new version of the registry's `DeploymentConfig` is running:
 
   [cloud-user@{{MASTER_HOSTNAME}} ~]$ oc get dc/docker-registry
