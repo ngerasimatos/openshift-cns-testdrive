@@ -1402,7 +1402,7 @@ Resources:
           Ebs:
             VolumeSize: '10'
             VolumeType: 'gp2'
-            DeleteOnTermination: 'true
+            DeleteOnTermination: 'true'
       Tags:
       - Key: Application
         Value:
@@ -1583,7 +1583,11 @@ Resources:
           Ref: AWS::StackId
       - Key: Name
 <<<<<<< HEAD
+<<<<<<< HEAD
         Value: !Join [ ., [node06, !Ref QwiklabId, !Ref 'PublicHostedZone' ] ]
+=======
+        Value: !Join [ ., [node04, !Ref QwiklabId, !Ref 'PublicHostedZone' ] ]
+>>>>>>> parent of e780659... use the correct DNS with specific aws account (#56)
 =======
         Value: !Join [ ., [node04, !Ref QwiklabId, !Ref 'PublicHostedZone' ] ]
 >>>>>>> parent of e780659... use the correct DNS with specific aws account (#56)
@@ -1596,7 +1600,11 @@ Resources:
             - mounts
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             fqdn: node06.${QwiklabId}.${PublicHostedZone}
+=======
+            fqdn: node04.${QwiklabId}.${PublicHostedZone}
+>>>>>>> parent of e780659... use the correct DNS with specific aws account (#56)
 =======
             fqdn: node04.${QwiklabId}.${PublicHostedZone}
 >>>>>>> parent of e780659... use the correct DNS with specific aws account (#56)
