@@ -1,0 +1,350 @@
+
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+        <link rel="canonical" href="https://dmesser.github.io/openshift-cns-testdrive/">
+      
+      
+      
+        <link rel="shortcut icon" href="./img/favicon.ico">
+      
+      <meta name="generator" content="mkdocs-0.16.3, mkdocs-material-1.7.3">
+    
+    
+      
+        <title>OpenShift Test Drive for Administrators</title>
+      
+    
+    
+      <script src="./assets/javascripts/modernizr-1df76c4e58.js"></script>
+    
+    
+      <link rel="stylesheet" href="./assets/stylesheets/application-acc56dad49.css">
+      
+        <link rel="stylesheet" href="./assets/stylesheets/application-8817cfa535.palette.css">
+      
+    
+    
+      
+        
+        
+        
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    
+    
+    
+  </head>
+  
+  
+  
+  
+    <body data-md-color-primary="red" data-md-color-accent="light-blue">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="drawer">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="search">
+    <label class="md-overlay" data-md-component="overlay" for="drawer"></label>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <a href="https://dmesser.github.io/openshift-cns-testdrive/" title="OpenShift Test Drive for Administrators" class="md-logo md-header-nav__button">
+            <img src="./img/shadowman_rgb.png" width="24" height="24">
+          </a>
+        
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <span class="md-flex__ellipsis md-header-nav__title">
+          
+            
+              
+            
+            Overview
+          
+        </span>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="search"></label>
+          
+<div class="md-search" data-md-component="search">
+  <label class="md-search__overlay" for="search"></label>
+  <div class="md-search__inner">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" required placeholder="Search" accesskey="s" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query">
+      <label class="md-icon md-search__icon" for="search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset">close</button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result" data-md-lang-search="">
+          <div class="md-search-result__meta" data-md-lang-result-none="No matching documents" data-md-lang-result-one="1 matching document" data-md-lang-result-other="# matching documents">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+      
+      <main class="md-main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="drawer">
+    
+      <i class="md-logo md-nav__button">
+        <img src="./img/shadowman_rgb.png">
+      </i>
+    
+    OpenShift Test Drive for Administrators
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="toc">
+        Overview
+      </label>
+    
+    <a href="." title="Overview" class="md-nav__link md-nav__link--active">
+      Overview
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-pre-requisites" title="1. Pre-requisites" class="md-nav__link">
+    1. Pre-requisites
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-how-to-start-your-test-drive" title="2. How to start your Test Drive" class="md-nav__link">
+    2. How to start your Test Drive
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-how-to-access-your-lab-guide" title="3. How to access your lab guide" class="md-nav__link">
+    3. How to access your lab guide
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-how-to-access-the-lab-environment" title="4. How to access the lab environment" class="md-nav__link">
+    4. How to access the lab environment
+  </a>
+  
+</li>
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-pre-requisites" title="1. Pre-requisites" class="md-nav__link">
+    1. Pre-requisites
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-how-to-start-your-test-drive" title="2. How to start your Test Drive" class="md-nav__link">
+    2. How to start your Test Drive
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-how-to-access-your-lab-guide" title="3. How to access your lab guide" class="md-nav__link">
+    3. How to access your lab guide
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-how-to-access-the-lab-environment" title="4. How to access the lab environment" class="md-nav__link">
+    4. How to access the lab environment
+  </a>
+  
+</li>
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <h1 id="welcome-to-the-openshift-test-drive-for-administrators">Welcome to the OpenShift Test Drive for Administrators</h1>
+<p>This lab guide is designed for self-paced walk-through of the "Container-Native Storage on OpenShift 3.5" hosted on <a href="https://redhat.qwiklab.com">redhat.qwkilab.com</a>. This lab gives you access to a fully functional OpenShift Container Platform 3.5 environment hosted on Amazon Web Service.</p>
+<h2 id="1-pre-requisites">1. Pre-requisites</h2>
+<p>For this lab you need to fulfill the following pre-requisites:</p>
+<ul>
+<li>
+<p>Workstation with Internet access</p>
+</li>
+<li>
+<p>SSH client supporting authentication with a private key</p>
+</li>
+</ul>
+<h2 id="2-how-to-start-your-test-drive">2. How to start your Test Drive</h2>
+<p>To start the Test Drive press <b><span style="background-color:#909e33; color:white; font-size: 120%">&nbsp;&nbsp;Start Lab&nbsp;&nbsp;</span></b> button in the top bar.</p>
+<h2 id="3-how-to-access-your-lab-guide">3. How to access your lab guide</h2>
+<p>When you started your Test Drive the lab environment will provision in roughly 5 minutes. During this time you'll see a progress bar above this page.</p>
+<p><img alt="CNS Lab Infrastructure" src="./img/qwiklab-progress-bar.png" /></p>
+<p>When your lab infrastructure is ready this progress bar disappear. Click the <span style="background-color:#0087cf; color:white; font-size: 120%">&nbsp;&nbsp;Addl. Info&nbsp;&nbsp;</span> button to retrieve the URL to your lab guide:</p>
+<p><img alt="CNS Lab Infrastructure" src="./img/qwiklab-labguide-url.png" /></p>
+<p>Open this URL in a new tab to view your personalized lab guide!</p>
+<h2 id="4-how-to-access-the-lab-environment">4. How to access the lab environment</h2>
+<p>When your lab infrastructure is ready click the <span style="background-color:#0087cf; color:white; font-size: 120%">&nbsp;&nbsp;Connect&nbsp;&nbsp;</span> button and download the SSH private key to your computer:</p>
+<p><img alt="CNS Lab Infrastructure" src="./img/qwiklab-pem-key.png" /></p>
+<p>&#8680; To login via SSH download the PEM file to your machine and change the permissions:</p>
+<pre><code>chmod 0400 ~/Downloads/&lt;pem-file-name&gt;
+</code></pre>
+<p>Click the <span style="background-color:#0087cf; color:white; font-size: 120%">&nbsp;&nbsp;Addl. Info&nbsp;&nbsp;</span> button again to retrieve IP address of your environment:</p>
+<p><img alt="CNS Lab Infrastructure" src="./img/qwiklab-master-ip.png" /></p>
+<p>&#8680; Then login with the ssh client like this:</p>
+<pre><code>ssh -i ~/Downloads/&lt;pem-file-name&gt; -l cloud-user &lt;MasterIPAddress&gt;
+</code></pre>
+<p>Follow the lab guide to navigate the environment and conduct the prepared exercises.</p>
+<p>Have fun!</p>
+                
+                  
+                
+              
+              
+                
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            Copyright ©2017 Red Hat, Inc.
+          </div>
+        
+        powered by
+        <a href="http://www.mkdocs.org" title="MkDocs">MkDocs</a>
+        and
+        <a href="http://squidfunk.github.io/mkdocs-material/" title="Material for MkDocs">
+          Material for MkDocs</a>
+      </div>
+      
+        
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="./assets/javascripts/application-b30566c560.js"></script>
+      
+      
+      <script>app.initialize({url:{base:"."}})</script>
+      
+    
+    
+      
+    
+  </body>
+</html>
